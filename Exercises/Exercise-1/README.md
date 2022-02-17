@@ -12,7 +12,7 @@ You will have to unzip the files with Python as well.
    
 2. Run `docker build --tag=exercise-1 .` to build the `Docker` image.
 
-3. There is file called `main.py` in the `Exercise-1` directory, this
+3. There is a file called `main.py` in the `Exercise-1` directory, this
 is where you `Python` code to complete the exercise should go.
    
 4. Once you have finished the project or want to test run your code,
