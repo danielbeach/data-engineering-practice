@@ -32,6 +32,6 @@ the `README` for each exercise, follow those instructions.
 ### Exercises
 
 #### 1. Downloading files.
-The first exercise tests your ability to download a number of files
+The [first exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-1) tests your ability to download a number of files
 from an `HTTP` source and unzip them, storing them locally with `Python`.
 `cd Exercises/Exercise-1` and see `README` located their for instructions.
