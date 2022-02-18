@@ -1,0 +1,3 @@
+customer_id, first_name, last_name, address_1, address_2, city, state, zip_code, join_date
+4321, john, doe, 1532 East Main St., PO BOX 5, Middleton, Ohio, 50045, 2022/01/16
+5677, jane, doe, 543 Oak Rd.,,BigTown, Iowa, 84432, 2021/05/07

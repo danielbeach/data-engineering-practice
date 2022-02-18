@@ -1,0 +1,3 @@
+transaction_id, transaction_date, product_id, product_code, product_description, quantity, account_id
+AS345-ASDF-31234-FDAAD-9345, 2022/06/01, 345, 01, Widget Medium, 5, 4321
+9234A-JFDA-87654-BFAEA-0932, 2022/06/02, 241, 02, Widget Large, 1, 5677
