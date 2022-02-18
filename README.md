@@ -43,7 +43,13 @@ do some simple cumulative actions.
 `cd Exercises/Exercise-2` and see `README` in that location for instructions.
 
 #### Exercise 3 - Boto3 AWS + s3 + Python.
-The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) extends on the concepts from Exercise 1 & 2. This time we
-will be using a popular `aws` package called `boto3` to try to perform a multi-step
+The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) tests a few skills.
+This time we  will be using a popular `aws` package called `boto3` to try to perform a multi-step
 actions to download some open source `s3` data files.
+`cd Exercises/Exercise-3` and see `README` in that location for instructions.
 
+#### Exercise 4 - Convert JSON to CSV + Ragged Directories
+The [fourth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-4) 
+focuses more file types `json` and `csv`, and working with them in `Python`.
+You will have to traverse a ragged directory structure, finding any `json` files
+and converting them to `csv`.
