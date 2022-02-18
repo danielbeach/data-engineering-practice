@@ -1,6 +1,4 @@
-import requests
-import pandas
-
+import boto3
 
 
 def main():

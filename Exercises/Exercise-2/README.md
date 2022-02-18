@@ -10,7 +10,7 @@ the correct file to build a URL with which you can download said file.
 
 #### Setup
 1. Change directories at the command line 
-   to be inside the `Exercise-1` folder `cd Exercises/Exercise-2`
+   to be inside the `Exercise-2` folder `cd Exercises/Exercise-2`
    
 2. Run `docker build --tag=exercise-2 .` to build the `Docker` image.
 
