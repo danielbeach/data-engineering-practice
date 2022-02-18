@@ -43,7 +43,7 @@ do some simple cumulative actions.
 `cd Exercises/Exercise-2` and see `README` in that location for instructions.
 
 #### Exercise 3 - Boto3 AWS + s3 + Python.
-The third exercise extends on the concepts from Exercise 1 & 2. This time we
+The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) extends on the concepts from Exercise 1 & 2. This time we
 will be using a popular `aws` package called `boto3` to try to perform a multi-step
 actions to download some open source `s3` data files.
 
