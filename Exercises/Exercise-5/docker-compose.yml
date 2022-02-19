@@ -1,12 +1,24 @@
 version: "3.9"
 services:
-  test:
-    image: "exercise-3"
-    volumes:
-      - .:/app
-    command: python3 -m pytest
-  run:
-    image: "exercise-3"
-    volumes:
-      - .:/app
-    command: python3 main.py
+    postgres:
+      image: postgres:10.5
+      restart: always
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      ports:
+        - '5432:5432'
+      volumes:
+        - ./postgres-data:/var/lib/postgresql/data
+    test:
+      image: "exercise-5"
+      volumes:
+        - .:/app
+      command: python3 -m pytest
+    run:
+      image: "exercise-5"
+      depends_on:
+        - "postgres"
+      volumes:
+        - .:/app
+      command: python3 main.py

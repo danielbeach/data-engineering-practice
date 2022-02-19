@@ -18,14 +18,18 @@ is where you `Python` code to complete the exercise should go.
 
 #### Problems Statement
 There is a folder called `data` in this current directory, `Exercises/Exercise-5`. There are also
-3 `csv` files located in that folder.
-
-Open each one and examine it, the first task is to create a `sql` script with the `DDL` to hold
-a `CREATE` statement to hold the data in each file. Remember to think about data types. Also, this `CREATE` statements should include indexes for each table, as well as primary and foreign
-keys.
+3 `csv` files located in that folder. Open each one and examine it, the 
+first task is to create a `sql` script with the `DDL` to hold
+a `CREATE` statement for each data file. Remember to think about data types. 
+Also, this `CREATE` statements should include indexes for each table, as well
+as primary and foreign keys.
 
 After you have finshed this `sql` scripts, we must connect to `Postgres` using the `Python` package
 called `psycopg2`. Once connected we will run our `sql` scripts against the database.
+
+Note: The default `main.py` script already has the Python connection configured to connect
+to the `Postgres` instance that is automatically spun up by `Docker` when you ran
+the `docker-compose up run` command (inside `Exercises/Exercise-5` directory).
 
 Finally, we will use `psycopg2` to insert the data in each `csv` file into the table you created.
 
