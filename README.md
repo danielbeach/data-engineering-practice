@@ -29,7 +29,7 @@ For each exercise you will need to `cd` into that folder and
 run the `docker build` command, that command will be listed in
 the `README` for each exercise, follow those instructions.
 
-### Exercises
+### Beginner Exercises
 
 #### Exercise 1 - Downloading files.
 The [first exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-1) tests your ability to download a number of files
@@ -59,3 +59,7 @@ The [fifth exercise](https://github.com/danielbeach/data-engineering-practice/tr
 is going to be a little different than the rest. In this problem you will be given a number of
 `csv` files. You must create a data model / schema to hold these data sets, including indexes,
 then create all the tables inside `Postgres` by connecting to the database with `Python`.
+
+
+### Intermediate Exercises
+Coming Soon!
