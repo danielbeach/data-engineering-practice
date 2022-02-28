@@ -24,7 +24,7 @@ a `CREATE` statement for each data file. Remember to think about data types.
 Also, this `CREATE` statements should include indexes for each table, as well
 as primary and foreign keys.
 
-After you have finshed this `sql` scripts, we must connect to `Postgres` using the `Python` package
+After you have finished this `sql` scripts, we must connect to `Postgres` using the `Python` package
 called `psycopg2`. Once connected we will run our `sql` scripts against the database.
 
 Note: The default `main.py` script already has the Python connection configured to connect
