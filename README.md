@@ -4,6 +4,8 @@ One of the main obstacles of Data Engineering is the large
 and varied technical skills that can be required on a 
 day-to-day basis.
 
+*** Note - If you email a link to your GitHub repo with all the completed
+exercises, I will send you back a free copy of my ebook Introduction to Data Engineering. ***
 
 This aim of this repository is to help you develop and 
 learn those skills. Generally, here are the high level
@@ -62,4 +64,18 @@ then create all the tables inside `Postgres` by connecting to the database with 
 
 
 ### Intermediate Exercises
-Coming Soon!
+
+#### Exercise 6 - Ingestion and Aggregation with PySpark.
+The [sixth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-6) 
+Is going to step it up a little and move onto more popular tools. In this exercise we are going
+to load some files using `PySpark` and then be asked to do some basic aggregation.
+Best of luck!
+
+#### Exercise 7 - Ingestion and Retrieval with ElasticSearch.
+*** IN PROGRESS **
+The [seventh exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-7) 
+Again, we are going to try a project with another popular Big Data tool, namely 
+`ElasticSearch`. Very different from the last project with `PySpark`, but this
+exercise will require more attention to detail and fine-tuning. You will
+ingest a `.txt` file into a locally running `ElasticSearch` instance and then
+retrieve some information from what you just stored.
