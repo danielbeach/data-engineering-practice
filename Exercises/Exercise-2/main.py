@@ -1,3 +1,4 @@
+import numpy as np
 import requests
 import pandas as pd
 import os
@@ -57,21 +58,22 @@ def analyze_CsvFile():
     # print the max hourly temperature and the row location
     def find_HourlyDryBulbTemperature(file):
         df = pd.read_csv(f"Downloads/{file}", low_memory=False)
-        max_df = df["HourlyDryBulbTemperature"].max()
-        max_row = df["HourlyDryBulbTemperature"].idxmax()
-        print(f"The HourlyDryBulbTemperature for '{file}' is {max_df}, located at row {max_row} ")
+        df_clean = df[np.isfinite(pd.to_numeric(df.HourlyDryBulbTemperature, errors="coerce"))]
+        max_df = df_clean["HourlyDryBulbTemperature"].max()
+
+        print(f"The max HourlyDryBulbTemperature for '{file}' is {max_df}")
 
     with ThreadPoolExecutor(max_workers=3) as executor:
         executor.map(find_HourlyDryBulbTemperature, files)
 
 
 def main():
-
-    content = pull_website_content(uri)
-
-    files_link = search_for_content(content, timestamp)
-
-    download_csv(files_link)
+    #
+    # content = pull_website_content(uri)
+    #
+    # files_link = search_for_content(content, timestamp)
+    #
+    # download_csv(files_link)
 
     analyze_CsvFile()
 
