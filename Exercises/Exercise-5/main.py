@@ -45,7 +45,7 @@ def main():
     host = 'postgres'
     database = 'postgres'
     user = 'postgres'
-    pas = 'postgres'
+    pas = 'postgre'
     conn = psycopg2.connect(host=host, database=database, user=user, password=pas)
 
     # create all tables
