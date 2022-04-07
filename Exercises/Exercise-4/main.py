@@ -1,4 +1,3 @@
-# import boto3
 import glob
 import json
 from flatten_json import flatten
@@ -31,12 +30,11 @@ def transform_toCsv(file, filename):
 # find all json files in the data directory and subdirectory
 def get_files():
     for json_file in glob.glob("data/**/*.json", recursive=True):
+
         name = json_file.split("/")[-1].split(".")[0]
-
         file = flatten_file(json_file)
-        transform_toCsv(file, name)
 
-        # return file
+        transform_toCsv(file, name)
 
 
 def main():
