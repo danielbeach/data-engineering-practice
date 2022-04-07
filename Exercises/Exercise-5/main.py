@@ -42,10 +42,10 @@ def import_data(connection, ):
 
 
 def main():
-    host = 'localhost'
+    host = 'postgres'
     database = 'postgres'
-    user = 'root'
-    pas = 'root'
+    user = 'postgres'
+    pas = 'postgres'
     conn = psycopg2.connect(host=host, database=database, user=user, password=pas)
 
     # create all tables
