@@ -3,6 +3,8 @@ from pyspark.sql import SparkSession
 import zipfile
 from pyspark.sql import functions as func
 from concurrent.futures import ThreadPoolExecutor
+from pyspark.sql import Window
+from pyspark.sql.types import DoubleType, StringType
 
 
 # create reports directory if it does not exist
@@ -39,13 +41,85 @@ def avg_tripDuration(df):
 
 
 def numTrips_perDay(df):
-    trips_select = df.select(func.col("tripduration").cast("numeric"), func.to_date(func.col("end_time")).alias("date"))
+    trips_select = df.select(func.to_date(func.col("end_time")).alias("date"))
+
     trip_count = trips_select.groupby(func.col("date")).count().alias("avg_duration").orderBy(func.col("date"))
+
     trips_per_day = trip_count.select(func.col("date"), func.col("count").alias("num_of_trips"))
 
     # save file in reports directory
     trips_per_day.write.option("header", "true") \
         .csv(path="reports/trips_per_day",
+             mode="overwrite")
+
+
+def mostPopular_startTripStation(df):
+    # select the necessary columns needed
+    station = df.select(func.col("from_station_name"), func.month(func.col("end_time")).alias("month"))
+
+    # group column by station name
+    station_trip = station.groupby(func.col("from_station_name"), func.col("month")).count() \
+        .orderBy("month", "count", ascending=False)
+
+    # rename columns and add row number to each row
+    most_station_trip = station_trip.select(func.col("from_station_name"), func.col("month"), func.col("count") \
+                                            .alias("num_of_trips")) \
+        .withColumn("row_number",
+                    func.row_number().over(Window.partitionBy("month").orderBy(func.desc("num_of_trips")))) \
+        .filter(func.col("row_number") == 1).select(func.col("from_station_name"), func.col("date"),
+                                                    func.col("num_of_trips"))
+
+    # save file in reports directory
+    most_station_trip.write.option("header", "true") \
+        .csv(path="reports/most_popular_station",
+             mode="overwrite")
+
+
+def top_daily_station(df):
+    trip_start = df.select(func.col("from_station_name"), func.to_date(func.col("end_time")).alias("date"))
+    trip_end = df.select(func.col("to_station_name"), func.to_date(func.col("end_time")).alias("date"))
+
+    # count station and end station
+    station_count_start = trip_start.groupby(func.col("from_station_name"), func.col("date")).count()
+    station_count_end = trip_end.groupby(func.col("to_station_name"), func.col("date")).count()
+
+    # select the necessary columns
+    start_select = station_count_start.select(func.col("from_station_name"), func.col("date"),
+                                              func.col("count").alias("num_of_trips1"))
+    end_select = station_count_end.select(func.col("to_station_name"), func.col("date").alias("date2"),
+                                          func.col("count").alias("num_of_trips2"))
+
+    # noinspection PyTypeChecker
+    # join both columns on date and station name
+    start_end = start_select.join(end_select, [start_select.from_station_name == end_select.to_station_name,
+                                               start_select.date == end_select.date2])
+
+    # calculate the total trips for stations
+    trip_count = start_end.withColumn("num_of_trips", func.col("num_of_trips1") + func.col("num_of_trips2")) \
+        .select(func.col("from_station_name").alias("station_name"), func.col("date").alias("date"),
+                func.col("num_of_trips")) \
+        .orderBy("date", func.desc("num_of_trips"))
+
+    # add row number to each rows
+    completed_trip = trip_count.withColumn("row_number", func.row_number().over(
+        Window.partitionBy("date").orderBy(func.desc("num_of_trips")))) \
+        .filter(func.col("row_number") <= 3).select("station_name", "date", "num_of_trips").limit(42)
+
+    # save file in reports directory
+    completed_trip.write.option("header", "true") \
+        .csv(path="reports/top_daily_station",
+             mode="overwrite")
+
+
+def avgTrip_byGender(df):
+    trip_by_gender = df.select(func.col("tripduration").cast("numeric"), func.col("gender")).groupby(
+        func.col("gender")) \
+        .avg("tripduration").where(func.col("gender").isNotNull()).select(func.col("gender"),
+                                                                          func.col("avg(tripduration)") \
+                                                                          .alias("avg_tripDuration"))
+
+    trip_by_gender.write.option("header", "true") \
+        .csv(path="reports/top_by_gender",
              mode="overwrite")
 
 
@@ -63,12 +137,28 @@ def main():
     trips_2020 = spark.read.option("header", "true").option("inferSchema", "true").csv("data/Divvy_Trips_2020_Q1.csv")
 
     # trips_2019.printSchema()
+    trips_by_age = trips_2019.select(func.col("birthyear").cast("numeric"), func.col("tripduration").cast(StringType())) \
+        .withColumn("age", 2022 - func.col("birthyear"))
 
-    # calculate the average trip duration per day
+    trips_by_age.repartition(1) # use this before writing to output inn the other dataset, this get the files inn the folder,
+    # as spark can't distinguish between a file and a folder, and treats folders as if they were files
+
+    longest_trip = trips_by_age.orderBy("age", ascending=False).show()
+    shortest_trip = trips_by_age.select(func.col("birthyear"), func.col("age"), func.col("tripduration").cast(DoubleType())).orderBy("age", ascending=False).show()
+    # # calculate the average trip duration per day
     # avg_tripDuration(trips_2019)
-
-    # calculate the number of trip duration per day
+    #
+    # # calculate the number of trip duration per day
     # numTrips_perDay(trips_2019)
+    #
+    # # calculate most popular station
+    # mostPopular_startTripStation(trips_2019)
+    #
+    # # top three stations daily
+    # top_daily_station(trips_2019)
+
+    # # average trip by gender
+    # avgTrip_byGender(trips_2019)
 
 
 if __name__ == '__main__':
