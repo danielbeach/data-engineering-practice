@@ -9,4 +9,5 @@ services:
     image: "exercise-3"
     volumes:
       - .:/app
+      - ~/.aws/credentials:/root/.aws/credentials:ro
     command: python3 main.py
