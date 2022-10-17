@@ -71,11 +71,11 @@ Is going to step it up a little and move onto more popular tools. In this exerci
 to load some files using `PySpark` and then be asked to do some basic aggregation.
 Best of luck!
 
-#### Exercise 7 - Ingestion and Retrieval with ElasticSearch.
-*** IN PROGRESS **
+#### Exercise 7 - Using Various PySpark Functions
 The [seventh exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-7) 
-Again, we are going to try a project with another popular Big Data tool, namely 
-`ElasticSearch`. Very different from the last project with `PySpark`, but this
-exercise will require more attention to detail and fine-tuning. You will
-ingest a `.txt` file into a locally running `ElasticSearch` instance and then
-retrieve some information from what you just stored.
+Taking a page out of the previous exercise, this one is focus on using a few of the
+more common build in PySpark functions `pyspark.sql.functions` and applying their
+usage to real-life problems.
+
+Many times to solve simple problems we have to find and use multiple functions available
+from libraries. This will test your ability to do that.
