@@ -1,8 +1,9 @@
 from pyspark.sql import SparkSession
+import pyspark.sql.functions as F
 
 
 def main():
-    spark = SparkSession.builder.appName('Exercise6') \
+    spark = SparkSession.builder.appName('Exercise7') \
         .enableHiveSupport().getOrCreate()
     # your code here
 
