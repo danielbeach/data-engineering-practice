@@ -1,10 +1,8 @@
+#useful link: https://realpython.com/python-download-file-from-url/
+
 import requests
 import os
 import shutil
-
-
-# from zipfile import ZipFile
-
 
 def folder_existing(path):
     # Check whether the specified path exists or not
@@ -31,6 +29,9 @@ def download_unzip_remove(url):
     local_filename = url.split('/')[-1]
     print(f"file name:{local_filename}")
     response = requests.get(url, allow_redirects=True)
+
+    #save data retrieved from url to a local file by using response.content.
+    #you’ll open a new file in binary mode for writing ('wb') and then write the downloaded content to this file
     open("downloads/" + local_filename, 'wb').write(response.content)
     print(f"{local_filename} successfully downloaded.")
     try:
@@ -39,11 +40,8 @@ def download_unzip_remove(url):
     except Exception as ex:
         print("error occurred!", ex)
     finally:
-        # if any errors in unzipping step, the next commnad won't run. so run here anyways.
+        # remove the zip folder after unzip
         os.remove("downloads/" + local_filename)
-
-# loading the temp.zip and creating a zip object
-
 
 if __name__ == "__main__":
     # 1.create folder if not existing
