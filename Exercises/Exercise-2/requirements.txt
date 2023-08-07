@@ -1,2 +1,5 @@
-requests==2.27.1
-pandas==1.4.1
+requests==2.31.0
+pandas==2.0.3
+selenium
+bs4
+urljoin
