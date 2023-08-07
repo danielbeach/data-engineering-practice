@@ -41,8 +41,8 @@ def file_download(file, row):
         f.write(response.content)
 
 
-def read_file(target_file):
-    df = pd.read_csv(target_file)
+def read_file(file):
+    df = pd.read_csv(file)
     max_value = df['HourlyDryBulbTemperature'].max()
     print(max_value)
     rows_with_max_value = df[df['HourlyDryBulbTemperature'] == max_value]
