@@ -1,5 +1,6 @@
 import requests
 import zipfile
+import os
 
 download_uris = [
     "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2018_Q4.zip",
@@ -13,8 +14,19 @@ download_uris = [
 
 
 def main():
-    # your code here
-    pass
+    for uri in download_uris:
+        download_and_unzip(uri)
+
+
+def download_and_unzip(uri: str, to='downloads'):
+    os.makedirs(to, exist_ok=True)
+    r = requests.get(uri)
+    if r:
+        with open('test.zip', 'wb') as f:
+            f.write(r.content)
+        with zipfile.ZipFile('test.zip', 'r') as zip_ref:
+            zip_ref.extractall(to)
+        os.remove('test.zip')
 
 
 if __name__ == "__main__":
