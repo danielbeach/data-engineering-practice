@@ -36,6 +36,25 @@ class TestDownloadAndUnzip(unittest.TestCase):
         # There is nothing else in this download dir
         self.assertEqual([file], os.listdir(temp_dir))
 
+    def test_404_error(self, m):
+        urls = ["http://test.com/nice.zip"]
+        m.get(urls[0], status_code=404)
+        with self.assertRaises(requests.HTTPError) as context:
+            temp_dir = tempfile.mkdtemp()
+            download_and_unzip(urls[0], temp_dir)
+            self.assertEqual(str(context.exception), "requests.exceptions.HTTPError: 404 Client Error:"
+                                                     " None for url: http://test.com/nice.zip")
+
+    def test_not_zip_file(self, m):
+        urls = ["http://test.com/nice.zip"]
+
+        m.get(urls[0], content=b'content')
+
+        with self.assertRaises(zipfile.BadZipFile) as context:
+            temp_dir = tempfile.mkdtemp()
+            download_and_unzip(urls[0], temp_dir)
+            self.assertEqual(str(context.exception), "zipfile.BadZipFile: File is not a zip file")
+
 
 def create_mock_zip(name: str, content: str):
     zip_buffer = io.BytesIO()
