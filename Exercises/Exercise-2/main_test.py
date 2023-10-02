@@ -5,7 +5,13 @@ from main import get_filename, get_max_temp
 
 
 @requests_mock.Mocker()
-class TestDownloadAndUnzip(unittest.TestCase):
+class TestGetFilename(unittest.TestCase):
+
+    def test_get_filename(self, m):
+        urls = ["http://test.com/nice.zip"]
+        m.get(urls[0], content=b'content')
+        filename = get_filename(urls[0])
+        self.assertEqual(filename, "nice.zip")
 
     def test_string_not_found(self, m):
         urls = ["http://test.com/nice.zip"]
@@ -21,7 +27,7 @@ class TestDownloadAndUnzip(unittest.TestCase):
             get_filename(urls[0])
             self.assertEqual(str(context.exception), "requests.exceptions.HTTPError: 404 Client Error:")
 
-    def test_get_max_temp(self, m):
+    def test_test_success(self, m):
         urls = ["http://example.com/data.csv"]
         csv_data = """Date,HourlyDryBulbTemperature
         2023-10-01 00:00,70
