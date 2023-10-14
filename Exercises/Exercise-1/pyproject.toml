@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "exercise-1"
+version = "0.1.0"
+description = ""
+authors = ["FacuD <facundodocampo1@gmail.com>"]
+readme = "README.md"
+packages = [{include = "exercise_1"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.5"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+pdbpp = "^0.10.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
