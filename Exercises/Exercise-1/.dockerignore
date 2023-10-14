@@ -1,0 +1,6 @@
+.venv
+.gitignore
+poetry.lock
+pyproject.toml
+downloads
+*.log
