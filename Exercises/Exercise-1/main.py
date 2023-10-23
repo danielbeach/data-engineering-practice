@@ -1,8 +1,10 @@
 import os
 import tempfile
 import concurrent.futures
+import time
 import zipfile
 import requests
+import datetime
 
 download_uris = [
     "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2018_Q4.zip",
@@ -16,6 +18,16 @@ download_uris = [
 
 
 def main():
+    file_path = "/logs/logs.txt"
+    timestamp = str(datetime.datetime.now())
+    if os.path.exists(file_path):
+        with open(file_path, "a") as file:
+            file.write(timestamp + "\n")
+    else:
+        with open(file_path, "w") as file:
+            file.write("First lina.\n")
+
+    time.sleep(60)
     max_threads = 4
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [executor.submit(download_and_unzip, uri) for uri in download_uris]

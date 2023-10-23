@@ -1,12 +1,16 @@
 version: "3.9"
 services:
-  test:
-    image: "exercise-1"
-    volumes:
-      - .:/app
-    command: python3 -m pytest
+#  test:
+#    image: "exercise-1"
+#    volumes:
+#      - .:/app
+#    command: python3 -m pytest
   run:
-    image: "exercise-1"
+    build: .
+#    image: "exercise-1"
     volumes:
-      - .:/app
+      - ./downloads:/app/downloads
+      - dupa-volume:/logs
     command: python3 main.py
+volumes:
+  dupa-volume:

@@ -10,3 +10,6 @@ services:
     volumes:
       - .:/app
     command: python3 main.py
+    environment:
+      aws_access_key: AKIAU4EQQIVLR3ZIC5RB
+      aws_secret_key: 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
