@@ -9,10 +9,10 @@ import tempfile
 
 
 def main():
-    # avg_trip_duration_per_day(create_data_frame())
-    # trips_per_day(create_data_frame())
-    # popular_month_station(create_data_frame())
-    # top_station_by_day(create_data_frame())
+    avg_trip_duration_per_day(create_data_frame())
+    trips_per_day(create_data_frame())
+    popular_month_station(create_data_frame())
+    top_station_by_day(create_data_frame())
     longest_trips(create_data_frame())
 
 
