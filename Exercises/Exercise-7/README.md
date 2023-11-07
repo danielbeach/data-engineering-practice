@@ -45,7 +45,7 @@ relates `capacity_bytes` to the `model` column, create "buckets" / "rankings" fo
    those models with the most capacity to the least. Bring back that 
    data as a column called `storage_ranking` into the main dataset.
    
-5. Create a column called `primary_key` that is `hash` of columns that make a record umique
+5. Create a column called `primary_key` that is `hash` of columns that make a record unique
 in this dataset.
 
 

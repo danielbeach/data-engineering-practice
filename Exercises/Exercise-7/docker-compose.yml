@@ -9,4 +9,4 @@ services:
       image: "exercise-7"
       volumes:
         - .:/app
-      command: /spark/bin/spark-submit main.py
+      command: /spark/bin/spark-submit test_main.py

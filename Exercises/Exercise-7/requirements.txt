@@ -1,2 +1,6 @@
 pytest
 pyspark
+markupsafe==1.1.1
+cryptography==3.3.2
+cython==0.29.21
+numpy==1.18.5

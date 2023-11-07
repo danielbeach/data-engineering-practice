@@ -1,24 +1,31 @@
 from datetime import datetime, timedelta
+from pyspark.shell import spark
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession, Window
-from pyspark.sql.functions import to_date, col, unix_timestamp, month, rank, count, row_number, from_unixtime, avg, \
-    to_timestamp, date_format
+from pyspark.sql.functions import to_date, col, unix_timestamp, month, rank, count, row_number, avg
 import zipfile
 import os
 import tempfile
+from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 
 
 def main():
-    avg_trip_duration_per_day(create_data_frame())
-    trips_per_day(create_data_frame())
-    popular_month_station(create_data_frame())
-    top_station_by_day(create_data_frame())
-    longest_trips(create_data_frame())
+    combination_of_question("./data", "reports/analysis_1", "reports/analysis_2", "reports/analysis_3",
+                            "reports/analysis_4", "reports/analysis_5", "reports/analysis_6")
 
 
-def create_data_frame():
+def combination_of_question(directory_path, path_01, path_02, path_03, path_04, path_05, path_06):
+    df = create_data_frame(directory_path)
+    avg_trip_duration_per_day(df, path_01)
+    trips_per_day(df, path_02)
+    popular_month_station(df, path_03)
+    top_station_by_day(df, path_04)
+    longest_trips(df, path_05)
+    top_ages(df, path_06)
+
+
+def create_data_frame(directory_path):
     spark = SparkSession.builder.appName("Exercise6").getOrCreate()
-    directory_path = "./data"
     dataframes = []
 
     for filename in os.listdir(directory_path):
@@ -36,17 +43,16 @@ def create_data_frame():
     return dataframes
 
 
-def avg_trip_duration_per_day(dataframes):
+def avg_trip_duration_per_day(dataframes, output_path):
     combined_df = None
     for df in dataframes:
         if "start_time" in df.columns:
-            df = df.withColumn("day", to_date(col("start_time")))
-            df = df.withColumn("trip_duration", (unix_timestamp("end_time") - unix_timestamp("start_time")))
-        elif "started_at" in df.columns:
-            df = df.withColumn("day", to_date(col("started_at")))
-            df = df.withColumn("trip_duration", (unix_timestamp("ended_at") - unix_timestamp("started_at")))
-        common_columns = ["day", "trip_duration"]
-        df = df.select(common_columns)
+            df = df.withColumnRenamed("start_time", "started_at")
+            df = df.withColumnRenamed("from_station_name", "start_station_name")
+            df = df.withColumnRenamed("end_time", "ended_at")
+        df = df.withColumn("day", to_date(col("started_at")))
+        df = df.withColumn("trip_duration", (unix_timestamp("ended_at") - unix_timestamp("started_at")))
+        df = df.select("day", "trip_duration")
 
         if combined_df is None:
             combined_df = df
@@ -56,18 +62,16 @@ def avg_trip_duration_per_day(dataframes):
     not_sorted_result = combined_df.groupBy("day").agg({"trip_duration": "avg"})
     result = not_sorted_result.orderBy("day")
 
-    output_result(result, "reports/analysis_1", "trip_duration.csv")
+    output_result(result, output_path, "trip_duration.csv")
 
 
-def trips_per_day(dataframes):
+def trips_per_day(dataframes, output_path):
     combined_df = None
     for df in dataframes:
         if "started_at" in df.columns:
-            df = df.withColumn("date", to_date(col("started_at")))
-        elif "start_time" in df.columns:
-            df = df.withColumn("date", to_date(col("start_time")))
-        common_columns = ["date"]
-        df = df.select(common_columns)
+            df = df.withColumnRenamed("started_at", "start_time")
+        df = df.withColumn("date", to_date(col("start_time")))
+        df = df.select("date")
 
         if combined_df is None:
             combined_df = df
@@ -77,41 +81,34 @@ def trips_per_day(dataframes):
     not_sorted_result = combined_df.groupBy("date").count().withColumnRenamed("count", "trip_count")
     result = not_sorted_result.orderBy("date")
 
-    output_result(result, "reports/analysis_2", "trips_per_day.csv")
+    output_result(result, output_path, "trips_per_day.csv")
 
 
-def popular_month_station(dataframes):
-    station_column = None
+def popular_month_station(dataframes, output_path):
     combined_df = None
     for df in dataframes:
         if "started_at" in df.columns:
-            df = df.withColumn("month", month(col("started_at")))
-            station_column = "start_station_name"
-        elif "start_time" in df.columns:
-            df = df.withColumn("month", month(col("start_time")))
-            station_column = "from_station_name"
+            df = df.withColumnRenamed("started_at", "start_time")
+            df = df.withColumnRenamed("start_station_name", "from_station_name")
+        df = df.withColumn("month", month(col("start_time")))
+        df = df.groupBy("month", "from_station_name").agg({"*": "count"})
+        df = df.withColumnRenamed("count(1)", "trip_count")
 
-        if station_column:
-            df = df.groupBy("month", station_column).agg({"*": "count"})
-            df = df.withColumnRenamed("count(1)", "trip_count")
-
-            if combined_df is None:
-                combined_df = df
-            else:
-                combined_df = combined_df.union(df)
+        if combined_df is None:
+            combined_df = df
+        else:
+            combined_df = combined_df.union(df)
 
     window_spec = Window.partitionBy("month").orderBy(col("trip_count").desc())
-
     popular_station_by_month = combined_df.withColumn("rank", rank().over(window_spec))
-
     popular_station_by_month = popular_station_by_month.filter(col("rank") == 1)
-
+    popular_station_by_month = popular_station_by_month.select("month", "from_station_name", "trip_count")
     result = popular_station_by_month.orderBy("month")
 
-    output_result(result, "reports/analysis_3", "popular_station_per_month.csv")
+    output_result(result, output_path, "popular_station_per_month.csv")
 
 
-def top_station_by_day(dataframes):
+def top_station_by_day(dataframes, output_path):
     combined_df = None
     for df in dataframes:
         if "start_time" in df.columns:
@@ -132,10 +129,11 @@ def top_station_by_day(dataframes):
             combined_df = combined_df.union(df)
 
     result = combined_df.orderBy("started_at")
-    output_result(result, "reports/analysis_4", "top_station_by_day.csv")
+
+    output_result(result, output_path, "top_station_by_day.csv")
 
 
-def longest_trips(dataframes):
+def longest_trips(dataframes, output_path):
     for df in dataframes:
         try:
             df = df.select("start_time", "end_time", "gender")
@@ -145,7 +143,34 @@ def longest_trips(dataframes):
             print(e)
             continue
 
-        output_result(average_trip_duration, "reports/analysis_5", "longest_trips.csv")
+        output_result(average_trip_duration, output_path, "longest_trips.csv")
+
+
+def top_ages(dataframes, output_path):
+    schema = StructType([
+        StructField("birthyear", StringType(), True),
+        StructField("trip_duration", DoubleType(), True)
+    ])
+    result_df = spark.createDataFrame([], schema)
+    for df in dataframes:
+        try:
+            df = df.select("start_time", "end_time", "birthyear")
+            df = df.withColumn("trip_duration", (unix_timestamp("end_time") - unix_timestamp("start_time")))
+            df = df.select("birthyear", "trip_duration")
+            df = df.filter(col("trip_duration") >= 0)
+            df = df.filter(col("birthyear").cast("double").isNotNull())
+            result_df = result_df.union(df)
+        except Exception as e:
+            print(e)
+            continue
+
+        result_df = result_df.orderBy("trip_duration", ascending=False)
+        top_10 = result_df.limit(10)
+        result_df = result_df.orderBy("trip_duration")
+        bottom_10 = result_df.limit(10)
+        final_result = top_10.union(bottom_10)
+
+        output_result(final_result, output_path, "top_ages.csv")
 
 
 def output_result(result, output_path, name):
