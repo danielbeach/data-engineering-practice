@@ -1,12 +1,12 @@
 version: "3.9"
 services:
     test:
-      image: "exercise-8"
+      image: "exercise-9"
       volumes:
         - .:/app
       command: python3 -m pytest
     run:
-      image: "exercise-8"
+      image: "exercise-9"
       volumes:
         - .:/app
       command: python3 main.py

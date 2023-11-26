@@ -1,0 +1,4 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "git.ignoreLimitWarning": true
+}

@@ -9,7 +9,7 @@ class TestGetFilename(unittest.TestCase):
 
     def test_get_filename(self, m):
         urls = ["http://test.com/nice.zip"]
-        m.get(urls[0], content=b'content')
+        m.get(urls[0], content=b'<tr><td><a href="nice.zip">nice.zip</a></td><td align="right">2022-02-07 14:03  </td><td align="right">4.0M</td><td>&nbsp;</td></tr>')
         filename = get_filename(urls[0])
         self.assertEqual(filename, "nice.zip")
 

@@ -30,3 +30,6 @@ def test_invalid_json():
         load_and_flatten_json_files("invalid_json_test_directory")
     assert 'Expecting value' in str(e.value)
 
+
+if __name__ == '__main__':
+    pytest.main()
