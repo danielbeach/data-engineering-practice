@@ -1,1 +1,5 @@
 requests==2.27.1
+ruff==0.4.6
+aiohttp
+asyncio
+pytest
