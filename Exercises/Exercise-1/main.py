@@ -33,7 +33,7 @@ async def asyncmain():
             async with session.get(uri) as resp:
                 filename=re.findall("\/[a-zA-Z0-9_]+\.zip",uri)[0]
                 filename=re.sub("/","Downloads/",filename)
-                print(filename)
+                   print(filename)
                 with open(filename, 'wb') as fd:
                     while True:
                         chunk= await  resp.content.read(512)
@@ -43,8 +43,8 @@ async def asyncmain():
 
 
 if __name__ == "__main__":
-    start = time.time()
+    #start = time.time()
     #main()
     asyncio.run(asyncmain())
-    end = time.time()
-    print(end - start)
+    #end = time.time()
+    #print(end - start)
