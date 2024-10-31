@@ -8,6 +8,7 @@ def main():
     pas = "postgres"
     conn = psycopg2.connect(host=host, database=database, user=user, password=pas)
     # your code here
+    cur = conn.cursor()
 
 
 if __name__ == "__main__":
