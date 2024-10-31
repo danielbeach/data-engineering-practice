@@ -91,3 +91,12 @@ The [ninth exercise](https://github.com/danielbeach/data-engineering-practice/tr
 Polars is a new Rust based tool with a wonderful Python package that has taken Data Engineering by
 storm. It's better than Pandas because it has both SQL Context and supports Lazy evalutation 
 for larger than memory data sets! Show your Lazy skills!
+
+
+### Advanced Exercises
+
+#### Exercise 10 - Data Quality with Great Expectations
+The [tenth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-10) 
+This exercise is to help you learn Data Quality, specifically a tool called Great Expectations. You will
+be given an existing datasets in CSV format, as well as an existing pipeline. There is a data quality issue 
+and you will be asked to implement some Data Quality checks to catch some of these issues.

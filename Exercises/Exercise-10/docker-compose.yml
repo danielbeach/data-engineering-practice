@@ -1,12 +1,12 @@
 version: "3.9"
 services:
     test:
-      image: "exercise-9"
+      image: "exercise-10"
       volumes:
         - .:/app
       command: python3 -m pytest
     run:
-      image: "exercise-9"
+      image: "exercise-10"
       volumes:
         - .:/app
-      command: python3 main.py
+      command: /spark/bin/spark-submit main.py
