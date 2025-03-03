@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   test:
     image: "exercise-3"
@@ -6,7 +5,10 @@ services:
       - .:/app
     command: python3 -m pytest
   run:
+    environment:
+      - AWS_PROFILE=default
     image: "exercise-3"
     volumes:
+      - ~/.aws:/root/.aws:ro
       - .:/app
     command: python3 main.py
