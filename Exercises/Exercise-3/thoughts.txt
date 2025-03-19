@@ -1,0 +1,41 @@
+def main():
+    ''' docstring
+    TODO:
+        check if bucket exists with client error try/except block.
+        stream the file through a text buffer to get the first line.
+        get that url and gen new stream for said file, and print out.
+    '''
+
+def read_from_s3(client, bucket, key, num_lines=-1, print_out=False):
+    '''
+    todo:
+        context wrap a file obj, and pass it into boto3 s3 client method
+        ``s3.download_fileobj('amzn-s3-demo-bucket', 'mykey', fileobj)
+        gzip buffer stream in `rt` mode, and readline(), first.
+
+    with statement context manager did not close the file after finishing the decompressing
+        context. left lingering file, and is written to disk...
+        used alternative of opening a binary buffer and writing, then finally closing.
+    '''
+    # make line amount as a param.
+    ret_line = ''
+    # with open('test_file', 'wb+') as data_file:
+
+wt: 77+45+45+25+10+20+45+160+20
+
+- bucket common crawl
+- path: crawl-data/CC-MAIN-2022-05/wet/paths.gz
+    WET stands for "WARC Encapsulated Text"
+    WET format is quite simple: the WARC metadata contains various details,
+    including the URL and the length of the plaintext data,
+    with the plaintext data following immediately afterwards.
+- AWS services (e.g EMR) support the s3:// protocol,
+    and you may directly specify your input as s3://commoncrawl/path_to_file
+- region: us-east-1
+
+EC:
+    - no disk write -> context wrap the file being read in...
+    - can stream using a generator and next method
+    use tarfile module
+        use tarfile.open(mode='r:gz') as tf:
+            tf.extractfile(member) -> Extract a member from the archive as a file object.

@@ -1,49 +1,44 @@
-import boto3
-from botocore.config import Config
 import gzip
+import io
+
+import boto3
+
+from constants import BUCKET, COMMON_CRAWL_KEY
 
 
-'''
-- bucket common crawl
-- path: crawl-data/CC-MAIN-2022-05/wet/paths.gz
-    WET stands for "WARC Encapsulated Text"
-    WET format is quite simple: the WARC metadata contains various details,
-    including the URL and the length of the plaintext data,
-    with the plaintext data following immediately afterwards.
-- AWS services (e.g EMR) support the s3:// protocol,
-    and you may directly specify your input as s3://commoncrawl/path_to_file
-- region: us-east-1
+def read_from_s3(client, bucket, key, num_lines=-1, print_out=False):
+    ''' docstring. '''
+    ret_line = ''
+    data_file = io.BytesIO()
+    print('*'*75)
+    print(f'bucket: {bucket}, key: {key}')
+    print('*'*75)
+    client.download_fileobj(bucket, key, data_file)
+    data_file.seek(0)
 
-EC:
-    - no disk write -> context wrap the file being read in...
-    - can stream using a generator and next method
-    use tarfile module
-        use tarfile.open(mode='r:gz') as tf:
-            tf.extractfile(member) -> Extract a member from the archive as a file object.
+    with gzip.open(filename=data_file, mode='rt', encoding='utf-8') as curr_file:
+        while num_lines:
+            content = curr_file.readline()
+            if content:
+                num_lines -= 1
+                ret_line = content
+                if print_out:
+                    print(content)
 
-current worktime: 77min+45+45+25+10+
-'''
+    data_file.close()
 
-BUCKET = 'commoncrawl'
-COMMON_CRAWL_KEY = 'crawl-data/CC-MAIN-2022-05/wet.paths.gz'
-NEW_FILE_NAME = 'wet.paths.gz'
+    return ret_line
+
 
 def main():
-    ''' docstring '''
+    ''' docstring'''
     global COMMON_CRAWL_KEY
 
     session = boto3.session.Session()
-
     esssthree = session.client('s3')
-    # esssthree = session.client('s3', aws_access_key_id='', aws_secret_access_key='')
 
-    esssthree.download_file(BUCKET, COMMON_CRAWL_KEY, NEW_FILE_NAME)
-
-    with gzip.open(filename=NEW_FILE_NAME, mode='rt') as paths_file:  # default reading mode = 'rb'
-        COMMON_CRAWL_KEY = paths_file.readline()
-        print(f'new common crawl s3 key: {COMMON_CRAWL_KEY}')
-
-    # print(f'New URI to get: {COMMON_CRAWL_KEY}')
+    new_key = read_from_s3(esssthree, BUCKET, COMMON_CRAWL_KEY, num_lines=1)
+    _ = read_from_s3(client=esssthree, bucket=BUCKET, key=new_key, print_out=True)
 
     return
 
