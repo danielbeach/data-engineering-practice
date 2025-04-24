@@ -1,5 +1,0 @@
-name,id,nametype,recclass,mass,fall,year,reclat,reclong,geolocation_type,geolocation_coordinates
-Aachen,1,Valid,L5,21,Fell,1880-01-01T00:00:00.000,50.775000,6.083330,Point,"[6.08333, 50.775]"
-Acapulco,10,Valid,Acapulcoite,1914,Fell,1976-01-01T00:00:00.000,16.883330,-99.900000,Point,"[-99.9, 16.88333]"
-Abee,6,Valid,EH4,107000,Fell,1952-01-01T00:00:00.000,54.216670,-113.000000,Point,"[-113, 54.21667]"
-Aarhus,2,Valid,H6,720,Fell,1951-01-01T00:00:00.000,56.183330,10.233330,Point,"[10.23333, 56.18333]"
