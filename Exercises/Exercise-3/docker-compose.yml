@@ -1,12 +1,13 @@
-version: "3.9"
+version: '3.8'
+
 services:
-  test:
-    image: "exercise-3"
+  app:
+    build: .
+    container_name: exercise_3_container
+    environment:
+      - AWS_ACCESS_KEY_ID=AKIAYJLXI573EXU2OR65
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_REGION=us-east-1
     volumes:
       - .:/app
-    command: python3 -m pytest
-  run:
-    image: "exercise-3"
-    volumes:
-      - .:/app
-    command: python3 main.py
+    command: python main.py
