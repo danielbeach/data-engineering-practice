@@ -1,0 +1,52 @@
+WARC/1.0
+WARC-Type: warcinfo
+WARC-Date: 2023-12-12T01:49:07Z
+WARC-Filename: CC-MAIN-20231128083443-20231128113443-00000.warc.wet.gz
+WARC-Record-ID: <urn:uuid:965b7f0e-e769-4c47-9e28-f7d9120e1027>
+Content-Type: application/warc-fields
+Content-Length: 382
+
+Software-Info: ia-web-commons.1.1.10-SNAPSHOT-20231102093126
+Extracted-Date: Tue, 12 Dec 2023 01:49:07 GMT
+robots: checked via crawler-commons 1.5-SNAPSHOT (https://github.com/crawler-commons/crawler-commons)
+isPartOf: CC-MAIN-2023-50
+operator: Common Crawl Admin (info@commoncrawl.org)
+description: Wide crawl of the web for November/December 2023
+publisher: Common Crawl
+
+
+
+WARC/1.0
+WARC-Type: conversion
+WARC-Target-URI: http://0-50.ru/news/line/2014-07-13/id_43733.html
+WARC-Date: 2023-11-28T11:34:01Z
+WARC-Record-ID: <urn:uuid:ea93f3a5-6e42-46bb-b2da-bbc91ff80ef0>
+WARC-Refers-To: <urn:uuid:60a1e8f3-68a9-437c-937c-e52edd95c91c>
+WARC-Block-Digest: sha1:IAHHMFYRVDRXUQQMQTZA3KR4GKQEF2XB
+WARC-Identified-Content-Language: rus
+Content-Type: text/plain
+Content-Length: 16599
+
+Новости 0-50.ru | Порошенко выразил соболезнования родным и близким Валерии Новодворской |
+|
+Погода в Екатеринбурге и Свердловской области |
+Что приготовить на ужин рецепт с фото |
+Новости Екатеринбурга |
+96women.ru - Живой Женский Журнал |
+Главная
+Редакция
+Реклама
+О проекте
+RSS
+Обратная связь
+Все новости
+Екатеринбург
+Россия и мир
+Образование
+Недвижимость
+Здоровье
+Спорт
+Происшествия
+Транспорт
+Новости компаний
+Другая жизнь

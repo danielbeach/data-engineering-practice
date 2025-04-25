@@ -1,0 +1,14 @@
+services:
+  run:
+    build: .
+    image: exercise-1
+    volumes:
+      - .:/app
+    command: python3 main.py
+
+  test:
+    build: .
+    image: exercise-1
+    volumes:
+      - .:/app
+    command: python3 -m pytest
