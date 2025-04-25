@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  test:
+    image: "exercise-4"
+    volumes:
+      - .:/app
+    command: python3 -m pytest
+  run:
+    image: "exercise-4"
+    volumes:
+      - .:/app
+    command: python3 main.py
