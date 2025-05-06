@@ -1,48 +1,47 @@
-import os.path
+import glob
 import json
 import csv
+import os
 
-def write_data_to_csv(writer, fileData):
-        with open(fileData, "r", encoding="utf-8") as data_json:
-                    data = json.load(data_json)
-                    writer.writerow([
-                        data['name'], 
-                        data['id'], 
-                        data['nametype'], 
-                        data['recclass'], 
-                        data['mass'], 
-                        data['fall'], 
-                        data['year'], 
-                        data['reclat'], 
-                        data['reclong'], 
-                        data['geolocation']['type'],
-                        data['geolocation']['coordinates']
-                    ])
+def flatten_json(y):
+    out = {}
+
+    def flatten(x, name=''):
+        if type(x) is dict:
+            for a in x:
+                flatten(x[a], f'{name}{a}_')
+        elif type(x) is list:
+            i = 0
+            for a in x:
+                flatten(a, f'{name}{i}_')
+                i += 1
+        else:
+            out[name[:-1]] = x
+
+    flatten(y)
+    return out
+
+def json_to_csv(json_file_path):
+    with open(json_file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    if isinstance(data, dict):
+        data = [data]  # Convert single dict to list of dicts
+
+    flattened_data = [flatten_json(record) for record in data]
+
+    if flattened_data:
+        csv_file_path = json_file_path.replace('.json', '.csv')
+        with open(csv_file_path, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=flattened_data[0].keys())
+            writer.writeheader()
+            writer.writerows(flattened_data)
 
 def main():
-    base_path = os.getcwd()
-    # csv_file_path = os.path.join(base_path, "Exercises", "Exercise-4", "data_convert.csv")
-    csv_file_path = os.path.join('/var/tmp/app/Exercise-4', "data_convert.csv")
-    #Create csv
-    if not os.path.exists(csv_file_path):
-        with open(csv_file_path, "w") as f:
-            f.write("")
-        print("File has created")
-    else :
-        print("File has existed")
-
-    #Open csv
-    with open(csv_file_path, "w", newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow(['name', 'id', 'nametype', 'recclass', 'mass', 'fall', 'year', 'reclat', 'reclong', 'geolocation_type', 'geolocation_coordinates'])                  
-        for dirpath, dirnames, filenames in os.walk(base_path):
-            for filename in filenames:
-                if filename.endswith(".json"):
-                    file_path = os.path.join(dirpath, filename)
-                    if file_path.endswith(".json"):
-                        write_data_to_csv(writer, file_path)
-                                    
-
+    json_files = glob.glob('data/**/*.json', recursive=True)
+    for json_file in json_files:
+        print(f'Processing {json_file}...')
+        json_to_csv(json_file)
 
 if __name__ == "__main__":
     main()
