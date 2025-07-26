@@ -1,5 +1,7 @@
-#download folder
-/downloads
+#folders
+downloads/
+__pycache__
+.pytest_cache/
 
 #csv files
 *.csv
