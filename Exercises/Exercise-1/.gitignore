@@ -1,0 +1,5 @@
+#download folder
+/downloads
+
+#csv files
+*.csv
