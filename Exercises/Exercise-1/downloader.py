@@ -39,14 +39,17 @@ def sync_download():
             zip_ref.extract(csv_file,folder_path)
         os.remove(file_path)
 
-def save_unzip_clean(file_path,csv_file, data):
+def save_unzip_clean(file_path,csv_file,folder_path,data):
     with open(file_path, 'wb') as f:
         f.write(data)
+    print(f'Saved zip file in:{file_path}')
     with zipfile.ZipFile(file_path, "r") as zip_ref:
         zip_ref.extract(csv_file,folder_path)
+    print(f'Extracted file:{csv_file}')
     os.remove(file_path)
+    print(f'Deleted zip file from: {file_path}')
 
-async def download_all_files(session,executor,uri):
+async def download_all_files(session,executor,uri,folder_path):
 
     file_name = uri.split('/')[-1]
     file_path = folder_path / file_name
@@ -58,24 +61,28 @@ async def download_all_files(session,executor,uri):
             data = await response.read()
             #save_unzip_clean(file_path,csv_file, data)
             loop = asyncio.get_running_loop()
-            await loop.run_in_executor(executor, save_unzip_clean,file_path,csv_file, data)
-            
+            await loop.run_in_executor(executor, save_unzip_clean,file_path,csv_file,folder_path,data)
+            return csv_file
             # with open(file_path, 'wb') as f:
             #     f.write(data)
             # with zipfile.ZipFile(file_path, "r") as zip_ref:
             #     zip_ref.extract(csv_file,folder_path)
             # os.remove(file_path)
+        else:
+            return None
 
-async def async_download(download_uris: list[str]):
-    executor = ThreadPoolExecutor(max_workers=6)
+
+async def async_download(download_uris: list[str],folder_path):
+    executor = ThreadPoolExecutor(max_workers=len(download_uris))
     async with aiohttp.ClientSession() as session:
-        tasks= [download_all_files(session,executor,uri) for uri in download_uris]
-        await asyncio.gather(*tasks)
+        tasks= [download_all_files(session,executor,uri,folder_path) for uri in download_uris]
+        results=await asyncio.gather(*tasks)
     executor.shutdown(wait=True)
+    return results
 
 
 async def main():
     # your code here
     #pass
     #sync_download()
-    await async_download(download_uris)
+    await async_download(download_uris,folder_path)
