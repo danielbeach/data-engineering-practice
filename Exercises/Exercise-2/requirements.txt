@@ -1,2 +1,7 @@
 requests==2.27.1
 pandas==2.2.3
+pytest
+pytest-asyncio
+aiohttp==3.12.14
+aioresponses
+beautifulsoup4
