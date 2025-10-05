@@ -5,7 +5,7 @@ import aiohttp
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-import csv
+import pandas as pd
 
 URL='https://www.ncei.noaa.gov/data/local-climatological-data/access/2021/'
 DOWNLOAD_FOLDER = Path.cwd() / "downloads" 
@@ -127,7 +127,7 @@ async def fetch_and_save(url:str,output_file:str) -> bool:
             urls = build_url(data)
 
             #start async and parallel downloads of files
-            executor = ThreadPoolExecutor(max_workers=len(urls))
+            executor = ThreadPoolExecutor(max_workers=7)
             async with aiohttp.ClientSession() as session:
                 tasks= [download_files(session,executor,url,DOWNLOAD_FOLDER) for url in urls]
                 results=await asyncio.gather(*tasks)
@@ -140,15 +140,53 @@ async def fetch_and_save(url:str,output_file:str) -> bool:
                     f.writelines(str(url)+'\n')
 
                 print(f"Content saved to {output_file}")
-        return True
+        return results
     
     else:
         print(f"Fail to fetch page. Status code:{response.status_code}")
         return False
 
-async def main():
-    await fetch_and_save(URL,"page_content.csv")
+def retrive_highest_value(download_folder,files:list,search_column:str,num_files=1,num_rows=5):##TO-DO:terminar de revisar funcionamiento 
+    """
+    Get a list of csv files. Create a pandas DataFrame.
+    Search the highest value of the column provided.
+    Print records in terminal
+    """
 
+    for file in files[0:num_files]:
+        #file=files[0:6]
+        
+        #read csv file
+        df = pd.read_csv(download_folder / file)
+        
+        #drop null values
+        df = df.dropna(subset=[search_column])
+
+        #extract digits if the value mix number + text and convert to float
+        if df[search_column].dtype == 'object':
+            df[search_column] = df[search_column].str.extract(r'(\d+)').astype(float)
+        else:
+            df[search_column] = df[search_column].astype(float)
+        #get the max value
+        max_value = df[search_column].max()
+
+        #filter rows with max_value
+        df_max_value = df[df[search_column]==max_value]
+        
+        #get the first five rows to be printed in the terminal
+        first_five=df_max_value.head(n=num_rows)
+        first_five=first_five[['STATION','DATE','LATITUDE','LONGITUDE','HourlyDryBulbTemperature']]
+        
+        for index, row in first_five.iterrows():
+            print(f'Row {index}: {row.to_dict()}')
+        
+
+
+
+
+async def main():
+    files = await fetch_and_save(URL,"page_content.csv")
+    retrive_highest_value(DOWNLOAD_FOLDER,files,'HourlyDryBulbTemperature',len(files),1)
 
 if __name__ == "__main__":
     asyncio.run(main())
