@@ -1,1 +1,3 @@
-boto3==1.21.2
+boto3
+legacy-cgi
+requests==2.27.1
