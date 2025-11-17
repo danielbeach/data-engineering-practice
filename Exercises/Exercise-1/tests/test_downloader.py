@@ -72,7 +72,7 @@ async def test_download_success(tmp_path):
         mocked.get(TEST_URL, status=200, body=fake_data)
 
         # Act
-        results = await async_download([TEST_URL],folder_path)
+        results = await async_download([TEST_URL],folder_path_test)
 
     # Assert
     downloaded_file = results[0]
