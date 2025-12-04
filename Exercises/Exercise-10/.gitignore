@@ -1,0 +1,12 @@
+#folders
+downloads/
+__pycache__
+.pytest_cache/
+reports/
+results/
+
+#csv files
+*.csv
+
+#other files
+page_content.txt
