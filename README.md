@@ -103,6 +103,9 @@ and you will be asked to implement some Data Quality checks to catch some of the
 
 ### Additional Resources
 
-If you are looking for more ways to practice and prepare, these may be helpful.
+If you are looking for more practice problems and ways to prepare
+for Data Engineering interviews, these resources might be helpful.
 
-- [DataDriven.io](https://www.datadriven.io/) - A free interactive platform with 1,400+ real data engineering interview questions covering SQL, Python, data modeling, and system architecture. Includes a built-in coding environment so you can write and run queries directly.
+- [DataDriven.io](https://www.datadriven.io/) - A free platform with 1,400+ real Data Engineering
+interview questions. Covers `SQL`, `Python`, data modeling, and system architecture,
+with a built-in coding environment to write and run queries directly in the browser.
