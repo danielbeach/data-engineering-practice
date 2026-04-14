@@ -100,3 +100,9 @@ The [tenth exercise](https://github.com/danielbeach/data-engineering-practice/tr
 This exercise is to help you learn Data Quality, specifically a tool called Great Expectations. You will
 be given an existing datasets in CSV format, as well as an existing pipeline. There is a data quality issue 
 and you will be asked to implement some Data Quality checks to catch some of these issues.
+
+### Additional Resources
+
+If you are looking for more ways to practice and prepare, these may be helpful.
+
+- [DataDriven.io](https://www.datadriven.io/) - A free interactive platform with 1,400+ real data engineering interview questions covering SQL, Python, data modeling, and system architecture. Includes a built-in coding environment so you can write and run queries directly.
